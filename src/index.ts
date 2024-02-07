@@ -14,11 +14,21 @@ const sslOptions: { key: Buffer; cert: Buffer; passphrase: string } = {
   passphrase: '1234',
 };
 const app: Express = express();
-const port: number = 8080;
+const port: number = 8000;
 const server: https.Server = https.createServer(sslOptions, app);
-
+const httpsPort: number = 8443;
 const redisClient: redis.RedisClientType = redis.createClient();
 redisClient.connect();
+
+app.get('*', (req: Request, res: Response, next: NextFunction) => {
+  const protocol: string = req.protocol;
+  if (protocol == 'https') {
+    next();
+  } else {
+    const destination: string = `https://${req.hostname}:8443${req.url}`;
+    res.redirect(destination);
+  }
+});
 
 app.use(
   cors({
@@ -32,18 +42,8 @@ app.use(express.json());
 app.use(express.static('../'));
 app.use(cookieParser());
 
-app.get('*', (req: Request, res: Response, next: NextFunction) => {
-  const protocol: string = req.protocol;
-  if (protocol == 'https') {
-    next();
-  } else {
-    const destination: string = `https://${req.hostname}:8443${req.url}`;
-    res.redirect(destination);
-  }
-});
-
 //API
-// app.use("/postgre", require("./router/postgresql"))
+app.use('/account', require('./router/account'));
 
 app.use(function (err: Error, req: Request, res: Response, next: NextFunction) {
   errorPass(err, req, res);
@@ -51,5 +51,9 @@ app.use(function (err: Error, req: Request, res: Response, next: NextFunction) {
 app.use(error404Pass);
 
 app.listen(port, () => {
-  console.log(`${port}번 포트에서 서버가 동작하고 있습니다.`);
+  console.log(`${port}번 포트에서 http 서버가 동작하고 있습니다.`);
+});
+
+server.listen(httpsPort, () => {
+  console.log(`${httpsPort}번 포트에서 https 서버가 동작하고 있습니다.`);
 });

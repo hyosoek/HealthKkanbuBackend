@@ -1,6 +1,7 @@
 //postgreSQL
 
-require('dotenv').config({ path: '../.env' });
+import { config } from 'dotenv';
+config({ path: '.env' });
 import { Pool } from 'pg';
 
 const client = new Pool({
@@ -13,4 +14,4 @@ const client = new Pool({
 });
 
 // module.exports = {connection,pgConnect};
-module.exports = client;
+export default client;
