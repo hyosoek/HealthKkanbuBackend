@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import pool from '../config/database/postgreSQL';
+import pool from '@config/database/postgreSQL';
 // import inputCheck from 'src/module/inputCheck';
 const router = Router();
 
