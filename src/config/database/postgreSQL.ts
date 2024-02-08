@@ -4,7 +4,7 @@ import { config } from 'dotenv';
 config({ path: '.env' });
 import { Pool } from 'pg';
 
-const client = new Pool({
+const client: Pool = new Pool({
   user: process.env.DBUSER,
   host: process.env.DBHOST,
   database: process.env.DBDATABASE,

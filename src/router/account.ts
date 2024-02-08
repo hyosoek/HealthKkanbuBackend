@@ -1,15 +1,14 @@
-import dotenv from 'dotenv';
 import { Router } from 'express';
-
-dotenv.config({ path: '../../.env' });
-const router = Router();
 import pool from '../config/database/postgreSQL';
+// import inputCheck from 'src/module/inputCheck';
+const router = Router();
 
 //postgreSQL 연결체크
 const btreeAPI = '/log-in';
 router.post(btreeAPI, async (req, res, next) => {
   console.log('good');
   const { mail } = req.query;
+
   try {
     const sql = `SELECT 
                         count(*) 
