@@ -1,13 +1,13 @@
 import { Router } from 'express';
 import pool from '@config/database/postgreSQL';
-// import inputCheck from 'src/module/inputCheck';
+import inputCheck from '@module/inputCheck';
 const router = Router();
 
 //postgreSQL 연결체크
 const btreeAPI = '/log-in';
 router.post(btreeAPI, async (req, res, next) => {
-  console.log('good');
-  const { mail } = req.query;
+  const { mail, pw } = req.body;
+  inputCheck(mail).isMinSize(10);
 
   try {
     const sql = `SELECT 

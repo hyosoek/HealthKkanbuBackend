@@ -3,102 +3,94 @@ import validator from 'validator';
 import regexPatterns from '../config/regex.js';
 // import { BadRequestException } from '../module/customError';
 
-class inputCheck {
+class InputCheck {
   // unknown으로 입력을 처리하는 이유는, 애초에 제대로 입력이 왔는지 검증하기 위한 validator이
-  input: any;
-  constructor(input: any) {
+  input: unknown;
+  constructor(input: unknown) {
     this.input = input;
   }
 
   isEmpty = () => {
-    if (validator.isEmpty(this.input)) this.goError('Empty input');
+    if (this.input === '') this.goError(' is empty input');
     return this;
   };
 
   isNull = () => {
-    if (this.input == null) this.goError(this.input + ' is Null input');
+    if (this.input === null) this.goError(this.input + ' is null input');
     return this;
   };
 
   isUndefined = () => {
-    if (this.input == undefined)
-      this.goError(this.input + ' is Undefined input');
-    return this;
-  };
-
-  isByteLength = () => {
+    if (this.input === undefined)
+      this.goError(this.input + ' is undefined input');
     return this;
   };
 
   isMinSize = (size: number) => {
-    if (this.input.length < size)
-      this.goError(this.input + ' is Too short input');
-    return this;
+    if (typeof this.input === 'string' && this.input.length < size) return this;
+    else this.goError(this.input + ' is too short input or not string');
   };
 
   isMaxSize = (size: number) => {
-    if (this.input.length > size)
-      this.goError(this.input + ' is Too Large input');
-
-    return this;
+    if (typeof this.input === 'string' && this.input.length > size) return this;
+    else this.goError(this.input + ' is too long input or not string');
   };
 
   isMail = () => {
-    if (validator.isEmail(this.input) == false)
-      this.goError(this.input + ' is NOT Mail type');
-
-    return this;
+    if (typeof this.input === 'string' && validator.isEmail(this.input))
+      return this;
+    else this.goError(this.input + ' is not Mail type');
   };
 
-  isContact = () => {
-    if (regexPatterns.contact.test(this.input) == false)
-      this.goError(this.input + ' is NOT Contact type');
+  // isContact = () => {
+  //   if (regexPatterns.contact.test(this.input) == false)
+  //     this.goError(this.input + ' is NOT Contact type');
 
-    return this;
-  };
+  //   return this;
+  // };
 
-  isDate = () => {
-    if (regexPatterns.date.test(this.input) == false)
-      this.goError(this.input + ' is NOT Date type input');
+  // isDate = () => {
+  //   if (regexPatterns.date.test(this.input) == false)
+  //     this.goError(this.input + ' is NOT Date type input');
 
-    return this;
-  };
+  //   return this;
+  // };
 
-  isIP = () => {
-    if (validator.isIP(this.input) == false)
-      this.goError(this.input + ' is Not IP type input');
+  // isIP = () => {
+  //   if (validator.isIP(this.input) == false)
+  //     this.goError(this.input + ' is Not IP type input');
 
-    return this;
-  };
+  //   return this;
+  // };
 
-  isEqual = (input2: any) => {
-    if (validator.equals(this.input, input2))
-      this.goError(this.input + ' is NOT same input');
+  // isEqual = (input2: any) => {
+  //   if (validator.equals(this.input, input2))
+  //     this.goError(this.input + ' is NOT same input');
 
-    return this;
-  };
+  //   return this;
+  // };
 
-  isInt = () => {
-    if (validator.isInt(this.input))
-      this.goError(this.input + ' is NOT Int TYPE Input');
+  // isInt = () => {
+  //   if (validator.isInt(this.input))
+  //     this.goError(this.input + ' is NOT Int TYPE Input');
 
-    return this;
-  };
+  //   return this;
+  // };
 
-  isFinite = () => {
-    if (!Number.isFinite(this.input))
-      this.goError(this.input + ' is NOT Finite TYPE Input');
+  // isFinite = () => {
+  //   if (!Number.isFinite(this.input))
+  //     this.goError(this.input + ' is NOT Finite TYPE Input');
 
-    return this;
-  };
+  //   return this;
+  // };
 
   goError = (message: string) => {
     throw new Error(message);
   };
 }
 
-const isInputCheck = (input: any) => {
-  return new inputCheck(input);
+const inputCheck = (input: any) => {
+  return new InputCheck(input);
 };
 
-export default isInputCheck;
+export default inputCheck;
