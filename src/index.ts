@@ -4,7 +4,7 @@ import path from 'path';
 import fs from 'fs';
 import https from 'https';
 import cookieParser from 'cookie-parser';
-import { errorPass, error404Pass } from './middleware/errorhandling';
+import errorHandler from './middleware/errorhandling';
 import cors from 'cors';
 import * as redis from 'redis';
 
@@ -46,9 +46,8 @@ app.use(cookieParser());
 app.use('/account', require('./router/account'));
 
 app.use(function (err: Error, req: Request, res: Response, next: NextFunction) {
-  errorPass(err, req, res);
+  errorHandler(err, req, res, next);
 });
-app.use(error404Pass);
 
 app.listen(port, () => {
   console.log(`Http server is running at port:${port}`);

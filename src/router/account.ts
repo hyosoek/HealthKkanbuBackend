@@ -10,11 +10,12 @@ router.post(testApi, async (req, res, next) => {
 
   try {
     inputCheck(mail).isNotEmpty().isLength({ min: 4, max: 100 }).isMail();
+    inputCheck(temp).isInt();
+
     // inputCheck(temp).isContact();
     // inputCheck(temp).isDate();
     // inputCheck(temp).isIP();
     // inputCheck(temp).isEqual('123456');
-    // inputCheck(temp).isInt();
     // inputCheck(temp).isFloat();
 
     const sql = `SELECT 
