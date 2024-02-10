@@ -9,11 +9,11 @@ export default (
 ) => {
   const result = { message: '' };
   try {
-    if (!err.message || !('status' in err)) err = new InternerServerException();
+    if (!err.message || !('status' in err)) err = new InternerServerException(); // if non specify Error status or Error message
     result.message = err.message;
     res
       .status(
-        'status' in err && typeof err.status === 'number' ? err.status : 500
+        'status' in err && typeof err.status === 'number' ? err.status : 500 //there is no situation without err.status...but, double allocation on status?
       )
       .send(result);
   } catch (newerr) {
