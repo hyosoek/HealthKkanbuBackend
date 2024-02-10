@@ -1,95 +1,113 @@
-//그냥 validator를 써볼까
 import validator from 'validator';
-import regexPatterns from '@config/regex.js';
-import BadRequestException from '@module/customError';
+import regexPatterns from '@config/regex';
+import { BadRequestException } from '@module/customError';
 
 class InputCheck {
-  // unknown으로 입력을 처리하는 이유는, 애초에 제대로 입력이 왔는지 검증하기 위한 validator이
+  // Don't use any type. We use unknown.
   input: unknown;
   constructor(input: unknown) {
     this.input = input;
   }
 
-  isEmpty = () => {
-    if (this.input === '') this.goError(' is empty input');
+  isNotEmpty = () => {
+    // combine all 'invalid type inputCheck' process (Can use module Individually)
+    return this.isNotBlank().isNotNull().isNotUndefined();
+  };
+
+  isNotBlank = () => {
+    if (this.input === '') this.goError('input is "" ');
     return this;
   };
 
-  isNull = () => {
-    if (this.input === null) this.goError(this.input + ' is null input');
+  isNotNull = () => {
+    if (this.input === null) this.goError('input is null');
     return this;
   };
 
-  isUndefined = () => {
-    if (this.input === undefined)
-      this.goError(this.input + ' is undefined input');
+  isNotUndefined = () => {
+    if (this.input === undefined) this.goError('input is undefined');
     return this;
   };
 
-  isMinSize = (size: number) => {
-    if (typeof this.input === 'string' && this.input.length < size) return this;
-    else this.goError(this.input + ' is too short input or not string');
-  };
-
-  isMaxSize = (size: number) => {
-    if (typeof this.input === 'string' && this.input.length > size) return this;
-    else this.goError(this.input + ' is too long input or not string');
+  isLength = ({ min, max }: { min?: number; max?: number }) => {
+    if (!(typeof this.input === 'string'))
+      this.goError(this.input + ' is not string input');
+    else {
+      if (
+        (min !== undefined && this.input.length < min) ||
+        (max !== undefined && this.input.length > max)
+      )
+        this.goError(this.input + ' is out of length');
+    }
+    return this;
   };
 
   isMail = () => {
-    if (typeof this.input === 'string' && validator.isEmail(this.input))
-      return this;
-    else this.goError(this.input + ' is not Mail type');
+    if (!(typeof this.input === 'string' && validator.isEmail(this.input)))
+      this.goError(this.input + ' is not mail type input');
+    return this;
   };
 
-  // isContact = () => {
-  //   if (regexPatterns.contact.test(this.input) == false)
-  //     this.goError(this.input + ' is NOT Contact type');
+  isContact = () => {
+    if (
+      // !(typeof this.input === 'string' && validator.isMobilePhone(this.input))
+      // We want to save Phone number with only number. (validator's isMobilePhone includes symbold such '-')
+      !(
+        typeof this.input === 'string' && regexPatterns.contact.test(this.input)
+      )
+    )
+      this.goError(this.input + ' is not contact type input');
+    return this;
+  };
 
-  //   return this;
-  // };
+  isDate = () => {
+    if (
+      //!(typeof this.input === 'string' && validator.isDate(this.input))
+      // We want to save Date with PostgreSQL date type. (postgre's date column divides Y/M/D with only '-' not '/')
+      !(typeof this.input === 'string' && regexPatterns.date.test(this.input))
+    )
+      this.goError(this.input + ' is not date type input');
+    return this;
+  };
 
-  // isDate = () => {
-  //   if (regexPatterns.date.test(this.input) == false)
-  //     this.goError(this.input + ' is NOT Date type input');
+  isIP = () => {
+    if (!(typeof this.input === 'string' && validator.isIP(this.input)))
+      this.goError(this.input + ' is not IP type input');
+    return this;
+  };
 
-  //   return this;
-  // };
+  isEqual = (input2: any) => {
+    if (this.input !== input2) this.goError(this.input + ' is not same input');
+    return this;
+  };
 
-  // isIP = () => {
-  //   if (validator.isIP(this.input) == false)
-  //     this.goError(this.input + ' is Not IP type input');
+  isInt = () => {
+    if (
+      !(
+        typeof this.input === 'number' && validator.isInt(this.input.toString())
+      )
+    )
+      this.goError(this.input + ' is not int type input');
+    return this;
+  };
 
-  //   return this;
-  // };
-
-  // isEqual = (input2: any) => {
-  //   if (validator.equals(this.input, input2))
-  //     this.goError(this.input + ' is NOT same input');
-
-  //   return this;
-  // };
-
-  // isInt = () => {
-  //   if (validator.isInt(this.input))
-  //     this.goError(this.input + ' is NOT Int TYPE Input');
-
-  //   return this;
-  // };
-
-  // isFinite = () => {
-  //   if (!Number.isFinite(this.input))
-  //     this.goError(this.input + ' is NOT Finite TYPE Input');
-
-  //   return this;
-  // };
+  isFloat = () => {
+    if (
+      !(
+        typeof this.input === 'number' &&
+        validator.isFloat(this.input.toString())
+      )
+    )
+      this.goError(this.input + ' is not float type input');
+    return this;
+  };
 
   goError = (message: string) => {
-    throw new Error(message);
+    throw new BadRequestException(message);
   };
 }
 
-const inputCheck = (input: any) => {
+const inputCheck = (input: unknown) => {
   return new InputCheck(input);
 };
 

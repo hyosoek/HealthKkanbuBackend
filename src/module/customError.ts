@@ -1,5 +1,5 @@
 // 400 error
-class BadRequestException extends Error {
+export class BadRequestException extends Error {
   status: number;
   constructor(message: string) {
     super(message);
@@ -8,7 +8,7 @@ class BadRequestException extends Error {
 }
 
 // 401 error
-class UnauthorizedException extends Error {
+export class UnauthorizedException extends Error {
   status: number;
   constructor(message: string) {
     super(message);
@@ -17,7 +17,7 @@ class UnauthorizedException extends Error {
 }
 
 // 403 error
-class ForbbidenException extends Error {
+export class ForbbidenException extends Error {
   status: number;
   constructor(message: string) {
     super(message);
@@ -26,7 +26,7 @@ class ForbbidenException extends Error {
 }
 
 // 404 error
-class NotFoundException extends Error {
+export class NotFoundException extends Error {
   status: number;
   constructor(message: string) {
     super(message);
@@ -35,18 +35,10 @@ class NotFoundException extends Error {
 }
 
 // 500 error
-class InternerServerException extends Error {
+export class InternerServerException extends Error {
   status: number;
   constructor() {
-    super('서버에서 오류가 발생하였습니다');
+    super('interner server error!');
     this.status = 500;
   }
 }
-
-export default {
-  BadRequestException,
-  UnauthorizedException,
-  ForbbidenException,
-  NotFoundException,
-  InternerServerException,
-};

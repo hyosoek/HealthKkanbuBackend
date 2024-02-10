@@ -3,18 +3,27 @@ import pool from '@config/database/postgreSQL';
 import inputCheck from '@module/inputCheck';
 const router = Router();
 
-//postgreSQL 연결체크
-const btreeAPI = '/log-in';
-router.post(btreeAPI, async (req, res, next) => {
-  const { mail, pw } = req.body;
-  inputCheck(mail).isMinSize(10);
+const testApi: string = '/testApi';
+router.post(testApi, async (req, res, next) => {
+  const { mail, pw, temp }: { mail: string; pw: string; temp: number } =
+    req.body;
 
   try {
+    inputCheck(mail).isNotEmpty().isLength({ min: 4, max: 100 }).isMail();
+    // inputCheck(temp).isContact();
+    // inputCheck(temp).isDate();
+    // inputCheck(temp).isIP();
+    // inputCheck(temp).isEqual('123456');
+    // inputCheck(temp).isInt();
+    // inputCheck(temp).isFloat();
+
     const sql = `SELECT 
-                        count(*) 
-                    FROM account 
-                        WHERE id=$1;`;
-    const values = [mail];
+                  id,location
+                FROM 
+                  account
+                WHERE
+                  mail=$1 AND pw=$2`;
+    const values = [mail, pw];
     const data = await pool.query(sql, values);
     const row = data.rows;
     const result = {
@@ -28,3 +37,4 @@ router.post(btreeAPI, async (req, res, next) => {
 
 module.exports = router;
 //export default router;
+// This code is for import, but I will use this as router. I think It is better to use with require on this export.

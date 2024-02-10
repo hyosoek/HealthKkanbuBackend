@@ -51,9 +51,9 @@ app.use(function (err: Error, req: Request, res: Response, next: NextFunction) {
 app.use(error404Pass);
 
 app.listen(port, () => {
-  console.log(`${port}번 포트에서 http 서버가 동작하고 있습니다.`);
+  console.log(`Http server is running at port:${port}`);
 });
 
 server.listen(httpsPort, () => {
-  console.log(`${httpsPort}번 포트에서 https 서버가 동작하고 있습니다.`);
+  console.log(`Https server is running at port:${httpsPort}`);
 });

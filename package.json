@@ -23,13 +23,15 @@
     "pg": "^8.11.1",
     "socket.io": "^4.7.2",
     "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0",
+    "validator": "^13.11.0",
     "winston": "^3.11.0",
     "winston-daily-rotate-file": "^4.7.1"
   },
   "scripts": {
     "build": "npx tsc",
-    "start": "nodemon --exec ts-node src/index.ts",
-    "dev": "concurrently \"npx tsc --watch\" \"nodemon -q --exec ts-node src/index.ts\""
+    "start": "nodemon --exec ts-node dist/index.js",
+    "dev": "concurrently \"npx tsc --watch\" \"nodemon -q src/index.ts\""
   },
   "name": "healthkkanbu",
   "description": "node-express server",
@@ -47,8 +49,6 @@
     "concurrently": "^8.2.2",
     "nodemon": "^3.0.3",
     "redis": "^4.6.12",
-    "tsc-alias": "^1.8.8",
-    "tsconfig-paths": "^4.2.0",
     "typescript": "^5.3.3"
   }
 }

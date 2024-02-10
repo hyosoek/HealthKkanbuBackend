@@ -1,5 +1,4 @@
-//postgreSQL
-
+//postgreSQL connection
 import { config } from 'dotenv';
 config({ path: '.env' });
 import { Pool } from 'pg';
@@ -13,5 +12,4 @@ const client: Pool = new Pool({
   max: 20,
 });
 
-// module.exports = {connection,pgConnect};
 export default client;
