@@ -1,7 +1,7 @@
 //그냥 validator를 써볼까
 import validator from 'validator';
-import regexPatterns from '../config/regex.js';
-// import { BadRequestException } from '../module/customError';
+import regexPatterns from '@config/regex.js';
+import BadRequestException from '@module/customError';
 
 class InputCheck {
   // unknown으로 입력을 처리하는 이유는, 애초에 제대로 입력이 왔는지 검증하기 위한 validator이
