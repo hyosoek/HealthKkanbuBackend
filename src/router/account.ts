@@ -7,11 +7,9 @@ const testApi: string = '/testApi';
 router.post(testApi, async (req, res, next) => {
   const { mail, pw, temp }: { mail: string; pw: string; temp: number } =
     req.body;
-
   try {
     inputCheck(mail).isNotEmpty().isLength({ min: 4, max: 100 }).isMail();
     inputCheck(temp).isInt();
-
     // inputCheck(temp).isContact();
     // inputCheck(temp).isDate();
     // inputCheck(temp).isIP();

@@ -6,11 +6,14 @@ import errorHandler from '@middleware/errorHandling';
 import cors from 'cors';
 import * as redis from 'redis';
 import { sslOptions } from '@config/sslOptions';
+import { config } from 'dotenv';
+config({ path: '.env' });
 
 const app: Express = express();
-const port: number = 8000;
+const port: number = Number(process.env.PORT_NUM);
+const httpsPort: number = Number(process.env.HTTPS_PORT_NUM);
 const server: https.Server = https.createServer(sslOptions, app);
-const httpsPort: number = 8443;
+
 const redisClient: redis.RedisClientType = redis.createClient();
 redisClient.connect();
 
@@ -19,14 +22,14 @@ app.get('*', (req: Request, res: Response, next: NextFunction) => {
   if (protocol == 'https') {
     next();
   } else {
-    const destination: string = `https://${req.hostname}:8443${req.url}`;
+    const destination: string = `https://${req.hostname}:${httpsPort}${req.url}`;
     res.redirect(destination);
   }
 });
 
 app.use(
   cors({
-    // origin: 'http://localhost:8000',
+    // origin: 'http://localhost:${port}',
     origin: '*',
     credentials: true,
   })
