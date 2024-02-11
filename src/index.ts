@@ -1,18 +1,12 @@
 // Declare
 import express, { Express, Request, Response, NextFunction } from 'express';
-import path from 'path';
-import fs from 'fs';
 import https from 'https';
 import cookieParser from 'cookie-parser';
-import errorHandler from './middleware/errorhandling';
+import errorHandler from '@middleware/errorHandling';
 import cors from 'cors';
 import * as redis from 'redis';
+import { sslOptions } from '@config/sslOptions';
 
-const sslOptions: { key: Buffer; cert: Buffer; passphrase: string } = {
-  key: fs.readFileSync(path.join(__dirname, '../ssl/key.pem')),
-  cert: fs.readFileSync(path.join(__dirname, '../ssl/cert.pem')),
-  passphrase: '1234',
-};
 const app: Express = express();
 const port: number = 8000;
 const server: https.Server = https.createServer(sslOptions, app);
