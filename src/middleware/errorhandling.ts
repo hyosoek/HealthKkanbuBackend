@@ -1,6 +1,6 @@
 import { InternerServerException } from '@module/customError';
 import { Request, Response, NextFunction } from 'express';
-import { logger } from '@config/logger';
+import { logger } from '@middleware/logger';
 
 export default (
   err: Error,
@@ -21,7 +21,7 @@ export default (
       .status(
         'status' in err && typeof err.status === 'number' ? err.status : 500 //there is no situation without err.status...but, double allocation on status?
       )
-      .send(result);
+      .json(result);
   } catch (newerr) {
     // Is this try-catch necessary?
     console.log(newerr);

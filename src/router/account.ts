@@ -8,7 +8,7 @@ router.post(testApi, async (req, res, next) => {
   const { mail, pw, temp }: { mail: string; pw: string; temp: number } =
     req.body;
   try {
-    inputCheck(mail).isNotEmpty().isLength({ min: 4, max: 100 }).isMail();
+    // inputCheck(mail).isNotEmpty().isLength({ min: 4, max: 100 }).isMail();
     inputCheck(temp).isInt();
     // inputCheck(temp).isContact();
     // inputCheck(temp).isDate();
@@ -26,9 +26,9 @@ router.post(testApi, async (req, res, next) => {
     const data = await pool.query(sql, values);
     const row = data.rows;
     const result = {
-      data: row[0],
+      data: '123',
     };
-    res.send(result);
+    res.json(result);
   } catch (err) {
     next(err);
   }
