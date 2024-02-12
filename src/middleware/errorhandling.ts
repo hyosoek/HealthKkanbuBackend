@@ -1,6 +1,6 @@
 import { InternerServerException } from '@module/customError';
 import { Request, Response, NextFunction } from 'express';
-import logger from '@config/logger';
+import { logger } from '@config/logger';
 
 export default (
   err: Error,

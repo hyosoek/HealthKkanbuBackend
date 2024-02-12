@@ -1,5 +1,7 @@
 //https://seohyun0120.tistory.com/entry/Winston-consolelog%EB%A7%90%EA%B3%A0-winston%EC%9C%BC%EB%A1%9C-log%EB%A5%BC-%EA%B8%B0%EB%A1%9D%ED%95%B4%EB%B3%B4%EC%9E%90
-import winston, { transports, format } from 'winston';
+import winston, { format } from 'winston';
+import morgan from 'morgan';
+import { request } from 'http';
 
 function isFormatForConsole(identifier: boolean) {
   return format.combine(
@@ -12,7 +14,8 @@ function isFormatForConsole(identifier: boolean) {
     )
   );
 }
-const logger: winston.Logger = winston.createLogger({
+
+export const logger: winston.Logger = winston.createLogger({
   transports: [
     // console logging setting
     new winston.transports.Console({
@@ -29,4 +32,14 @@ const logger: winston.Logger = winston.createLogger({
   ],
 });
 
-export default logger;
+export const httpLogger = morgan('combined', {
+  stream: {
+    write: (message: string) => {
+      logger.http(message);
+    },
+  },
+});
+// first parameter is logging format
+// 'combined' : data with request user's information - for publishing
+// 'common' : simple data with request user's information
+// 'dev' : simple data without request user's information

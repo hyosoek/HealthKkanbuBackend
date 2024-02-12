@@ -8,6 +8,7 @@ import * as redis from 'redis';
 import { sslOptions } from '@config/sslOptions';
 import { config } from 'dotenv';
 config({ path: '.env' });
+import { httpLogger } from '@config/logger';
 
 const app: Express = express();
 const port: number = Number(process.env.PORT_NUM);
@@ -38,6 +39,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static('../'));
 app.use(cookieParser());
+app.use(httpLogger);
 
 //API
 app.use('/account', require('./router/account'));
