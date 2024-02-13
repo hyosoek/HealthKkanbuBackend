@@ -48,8 +48,7 @@ export const responseLogger = function () {
   return function (req: Request, res: Response, next: NextFunction) {
     const send = res.send;
     res.send = function (body): Response<unknown, Record<string, unknown>> {
-      // const temp: string = JSON.stringify(body);
-      logger.http(body);
+      // logger.http(body);
       return send.call(this, body);
     };
     next();

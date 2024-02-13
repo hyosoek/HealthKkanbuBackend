@@ -49,6 +49,8 @@ app.use(function (err: Error, req: Request, res: Response, next: NextFunction) {
   errorHandler(err, req, res, next);
 });
 
+// app.use(postProcessor());
+
 app.listen(port, () => {
   console.log(`Http server is running at port:${port}`);
 });
