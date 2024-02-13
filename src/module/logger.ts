@@ -1,7 +1,6 @@
 //https://seohyun0120.tistory.com/entry/Winston-consolelog%EB%A7%90%EA%B3%A0-winston%EC%9C%BC%EB%A1%9C-log%EB%A5%BC-%EA%B8%B0%EB%A1%9D%ED%95%B4%EB%B3%B4%EC%9E%90
 import winston, { format } from 'winston';
 import morgan from 'morgan';
-// import { Request, Response, NextFunction } from 'express';
 
 function isFormatForConsole(identifier: boolean) {
   return format.combine(
@@ -43,14 +42,3 @@ export const httpLogger = morgan('combined', {
     },
   },
 });
-
-// export const responseLogger = function () {
-//   return function (req: Request, res: Response, next: NextFunction) {
-//     const send = res.send;
-//     res.send = function (body): Response<unknown, Record<string, unknown>> {
-//       // logger.http(body);
-//       return send.call(this, body);
-//     };
-//     next();
-//   };
-// };

@@ -8,7 +8,7 @@ export class CustomError extends Error {
 }
 
 export class BadRequestException extends CustomError {
-  constructor(message: string = 'BadRequestException', reason: Object = {}) {
+  constructor(message: string = 'BadRequestException') {
     super(message);
     this.status = HttpStatus.BAD_REQUEST;
   }
@@ -36,8 +36,8 @@ export class ForbiddenException extends CustomError {
 }
 
 export class InternerServerException extends CustomError {
-  constructor(message: string) {
-    super(message != '' ? message : 'InternerServerException');
+  constructor(message: string = 'InternerServerException') {
+    super(message);
     this.status = HttpStatus.INTERNAL_SERVER_ERROR;
   }
 }

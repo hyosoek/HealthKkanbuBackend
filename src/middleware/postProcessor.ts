@@ -1,12 +1,17 @@
 import { Request, Response, NextFunction } from 'express';
-import { logger } from '@middleware/logger';
+import { httpLogger, logger } from '@middleware/logger';
+import { HttpStatus } from '@module/httpStatus';
 
 export default (req: Request, res: Response, next: NextFunction) => {
-  // 1. http req logging
-  // 2. http res logging
-  // 3. error logging
-  // 4. response send
+  // http req logging
+  httpLogger(req, res, next);
+
+  // response or error logging
+  if ('status' in res.locals) logger.error(res.locals.result);
+  // else logger.http('response = ' + JSON.stringify(res.locals.result)); //this is only for dev
+
+  //reponse to front
   res
-    .status('status' in res.locals ? res.locals.status : 200)
+    .status('status' in res.locals ? res.locals.status : HttpStatus.OK)
     .send(res.locals.result);
 };
