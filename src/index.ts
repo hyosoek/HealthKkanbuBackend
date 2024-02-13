@@ -8,7 +8,7 @@ import * as redis from 'redis';
 import { sslOptions } from '@config/sslOptions';
 import { config } from 'dotenv';
 config({ path: '.env' });
-import { httpLogger, responseLogger } from '@middleware/logger';
+import postProcessor from '@middleware/postProcessor';
 
 const app: Express = express();
 const port: number = Number(process.env.PORT_NUM);
@@ -39,17 +39,11 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static('../'));
 app.use(cookieParser());
-app.use(httpLogger);
-app.use(responseLogger());
 
 //API
 app.use('/account', require('./router/account'));
-
-app.use(function (err: Error, req: Request, res: Response, next: NextFunction) {
-  errorHandler(err, req, res, next);
-});
-
-// app.use(postProcessor());
+app.use(errorHandler);
+app.use(postProcessor);
 
 app.listen(port, () => {
   console.log(`Http server is running at port:${port}`);

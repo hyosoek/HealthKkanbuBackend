@@ -1,5 +1,5 @@
 import validator from 'validator';
-import regexPatterns from '@config/regex';
+import regexPatterns from '@module/regex';
 import { BadRequestException } from '@module/customError';
 
 class InputCheck {

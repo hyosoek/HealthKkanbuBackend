@@ -1,30 +1,21 @@
-import { InternerServerException } from '@module/customError';
+import { CustomError, InternerServerException } from '@module/customError';
 import { Request, Response, NextFunction } from 'express';
-import { logger } from '@middleware/logger';
 
 export default (
-  err: Error,
+  err: CustomError | Error,
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   const result = { message: '' };
-  try {
-    if (!err.message || !('status' in err)) err = new InternerServerException(); // if non specify Error status or Error message
+  if (err instanceof CustomError) {
+    res.locals.status = err.status;
     result.message = err.message;
-
-    logger.error(err.message);
-    // logger.warn(err.message);
-    // logger.silly(err.message); // non loggin on file
-
-    res
-      .status(
-        'status' in err && typeof err.status === 'number' ? err.status : 500 //there is no situation without err.status...but, double allocation on status?
-      )
-      .json(result);
-  } catch (newerr) {
-    // Is this try-catch necessary?
-    console.log(newerr);
-    res.status(500).send(result);
+  } else {
+    const serverError = new InternerServerException(err.message);
+    res.locals.status = serverError.status;
+    result.message = serverError.message;
   }
+  res.locals.result = result;
+  next();
 };

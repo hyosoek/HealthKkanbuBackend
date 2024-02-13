@@ -1,44 +1,43 @@
-// 400 error
-export class BadRequestException extends Error {
-  status: number;
+import { HttpStatus } from '@module/httpStatus';
+
+export class CustomError extends Error {
+  status: number = HttpStatus.INTERNAL_SERVER_ERROR;
   constructor(message: string) {
     super(message);
-    this.status = 400;
   }
 }
 
-// 401 error
-export class UnauthorizedException extends Error {
-  status: number;
-  constructor(message: string) {
+export class BadRequestException extends CustomError {
+  constructor(message: string = 'BadRequestException', reason: Object = {}) {
     super(message);
-    this.status = 401;
+    this.status = HttpStatus.BAD_REQUEST;
   }
 }
 
-// 403 error
-export class ForbbidenException extends Error {
-  status: number;
-  constructor(message: string) {
+export class UnauthorizedException extends CustomError {
+  constructor(message: string = 'UnauthorizedException') {
     super(message);
-    this.status = 403;
+    this.status = HttpStatus.UNAUTHORIZED;
   }
 }
 
-// 404 error
-export class NotFoundException extends Error {
-  status: number;
-  constructor(message: string) {
+export class NotFoundException extends CustomError {
+  constructor(message: string = 'NotFoundException') {
     super(message);
-    this.status = 404;
+    this.status = HttpStatus.NOT_FOUND;
   }
 }
 
-// 500 error
-export class InternerServerException extends Error {
-  status: number;
-  constructor() {
-    super('interner server error!');
-    this.status = 500;
+export class ForbiddenException extends CustomError {
+  constructor(message: string = 'ForbiddenException') {
+    super(message);
+    this.status = HttpStatus.FORBIDDEN;
+  }
+}
+
+export class InternerServerException extends CustomError {
+  constructor(message: string) {
+    super(message != '' ? message : 'InternerServerException');
+    this.status = HttpStatus.INTERNAL_SERVER_ERROR;
   }
 }

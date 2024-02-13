@@ -28,7 +28,8 @@ router.post(testApi, async (req, res, next) => {
     const result = {
       data: '123',
     };
-    res.json(result);
+    res.locals.result = result;
+    next();
   } catch (err) {
     next(err);
   }
