@@ -1,0 +1,32 @@
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+/// https://www.prisma.io/docs/orm/prisma-migrate/getting-started
+model account {
+  id        Int                      @id @default(autoincrement())
+  mail      String?                  @unique @db.VarChar(100)
+  pw        String?                  @db.VarChar(32)
+  nickname  String?                  @db.VarChar(32)
+  longitude Float?
+  latitude  Float?
+  location  Unsupported("geometry")?
+
+  @@index([location], map: "location_idx", type: Gist)
+  @@index([mail], map: "mail_idx")
+}
+
+/// This table contains check constraints anprisma migrate dev --name initd requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model spatial_ref_sys {
+  srid      Int     @id
+  auth_name String? @db.VarChar(256)
+  auth_srid Int?
+  srtext    String? @db.VarChar(2048)
+  proj4text String? @db.VarChar(2048)
+}
