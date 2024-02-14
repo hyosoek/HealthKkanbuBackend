@@ -1,6 +1,7 @@
 //https://seohyun0120.tistory.com/entry/Winston-consolelog%EB%A7%90%EA%B3%A0-winston%EC%9C%BC%EB%A1%9C-log%EB%A5%BC-%EA%B8%B0%EB%A1%9D%ED%95%B4%EB%B3%B4%EC%9E%90
 import winston, { format } from 'winston';
 import morgan from 'morgan';
+import DailyRotateFile from 'winston-daily-rotate-file';
 
 function isFormatForConsole(identifier: boolean) {
   return format.combine(
@@ -22,10 +23,19 @@ export const logger: winston.Logger = winston.createLogger({
       format: isFormatForConsole(true),
     }),
     // file logging setting
-    new winston.transports.File({
+    // new winston.transports.File({
+    //   level: 'debug',
+    //   filename: 'debug.log',
+    //   dirname: process.cwd() + '/log',
+    //   format: isFormatForConsole(false),
+    // }),
+    new DailyRotateFile({
       level: 'debug',
-      filename: 'debug.log',
-      dirname: process.cwd() + '/log',
+      filename: 'logs/application-%DATE%.log',
+      datePattern: 'YYYY-MM-DD',
+      zippedArchive: false,
+      maxSize: '20m',
+      maxFiles: '14d',
       format: isFormatForConsole(false),
     }),
   ],

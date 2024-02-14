@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { httpLogger, logger } from '@middleware/logger';
+import { httpLogger, logger } from '@module/logger';
 import { HttpStatus } from '@module/httpStatus';
 
 export default (req: Request, res: Response, next: NextFunction) => {
