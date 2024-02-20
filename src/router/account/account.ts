@@ -1,7 +1,10 @@
 import { Router } from 'express';
 import pool from '@config/database/postgreSQL';
 import inputCheck from '@module/inputCheck';
+import { PrismaClient } from '@prisma/client';
 const router = Router();
+
+const prisma = new PrismaClient();
 
 const testApi: string = '/testApi';
 router.post(testApi, async (req, res, next) => {
@@ -30,6 +33,25 @@ router.post(testApi, async (req, res, next) => {
     };
     res.locals.result = result;
     next();
+  } catch (err) {
+    next(err);
+  }
+});
+
+const prismaTestApi: string = '/prismaTestApi';
+router.post(prismaTestApi, async (req, res, next) => {
+  const { mail, pw, nickname }: { mail: string; pw: string; nickname: string } =
+    req.body;
+  try {
+    await prisma.account.create({
+      data: {
+        mail: 'tennfin2@gmail.com',
+        pw: '1234',
+        nickname: 'hyoseok',
+        longitude: null,
+        latitude: null,
+      },
+    });
   } catch (err) {
     next(err);
   }

@@ -41,7 +41,7 @@ app.use(express.static('../'));
 app.use(cookieParser());
 
 //API
-app.use('/account', require('./router/account'));
+app.use('/account', require('./router/account/account'));
 app.use(errorHandler);
 app.use(postProcessor);
 

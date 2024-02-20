@@ -13,7 +13,7 @@ model account {
   id        Int                      @id @default(autoincrement())
   mail      String?                  @unique @db.VarChar(100)
   pw        String?                  @db.VarChar(32)
-  nickname  String?                  @db.VarChar(32)
+  nickname  String?                  @unique @db.VarChar(32)
   longitude Float?
   latitude  Float?
   location  Unsupported("geometry")?

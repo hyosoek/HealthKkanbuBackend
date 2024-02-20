@@ -16,6 +16,9 @@ CREATE TABLE "account" (
 CREATE UNIQUE INDEX "account_mail_key" ON "account"("mail");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "account_nickname_key" ON "account"("nickname");
+
+-- CreateIndex
 CREATE INDEX "location_idx" ON "account" USING GIST ("location");
 
 -- CreateIndex
