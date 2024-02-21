@@ -10,13 +10,14 @@ datasource db {
 
 /// https://www.prisma.io/docs/orm/prisma-migrate/getting-started
 model account {
-  id        Int                      @id @default(autoincrement())
-  mail      String?                  @unique @db.VarChar(100)
-  pw        String?                  @db.VarChar(32)
-  nickname  String?                  @unique @db.VarChar(32)
-  longitude Float?
-  latitude  Float?
-  location  Unsupported("geometry")?
+  id           Int                      @id @default(autoincrement())
+  mail         String?                  @unique @db.VarChar(100)
+  pw           String?                  @db.VarChar(32)
+  nickname     String?                  @unique @db.VarChar(32)
+  longitude    Float?
+  latitude     Float?
+  location     Unsupported("geometry")?
+  refrigerator refrigerator[]
 
   @@index([location], map: "location_idx", type: Gist)
   @@index([mail], map: "mail_idx")
@@ -29,4 +30,13 @@ model spatial_ref_sys {
   auth_srid Int?
   srtext    String? @db.VarChar(2048)
   proj4text String? @db.VarChar(2048)
+}
+
+model refrigerator {
+  id         Int     @id @default(autoincrement())
+  account_id Int     @default(autoincrement())
+  energy     Float?  @db.Real
+  co2        Float?  @db.Real
+  model_name String? @db.VarChar(50)
+  account    account @relation(fields: [account_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }

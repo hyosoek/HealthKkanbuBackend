@@ -2,17 +2,19 @@ import { Router } from 'express';
 import pool from '@config/database/postgreSQL';
 import inputCheck from '@module/inputCheck';
 import { PrismaClient } from '@prisma/client';
+import { max } from 'moment';
 const router = Router();
 
 const prisma = new PrismaClient();
 
-const testApi: string = '/testApi';
-router.post(testApi, async (req, res, next) => {
-  const { mail, pw, temp }: { mail: string; pw: string; temp: number } =
-    req.body;
+const signInWithQuery: string = '/sign-in1';
+router.post(signInWithQuery, async (req, res, next) => {
+  // const { mail, pw, temp }: { mail: string; pw: string; temp: number } =
+  // req.body;
+
   try {
     // inputCheck(mail).isNotEmpty().isLength({ min: 4, max: 100 }).isMail();
-    inputCheck(temp).isInt();
+    //inputCheck(temp).isInt();
     // inputCheck(temp).isContact();
     // inputCheck(temp).isDate();
     // inputCheck(temp).isIP();
@@ -20,16 +22,16 @@ router.post(testApi, async (req, res, next) => {
     // inputCheck(temp).isFloat();
 
     const sql = `SELECT 
-                  id,location
+                  *
                 FROM 
                   account
                 WHERE
-                  mail=$1 AND pw=$2`;
-    const values = [mail, pw];
-    const data = await pool.query(sql, values);
+                  id < 500011`;
+    const data = await pool.query(sql);
     const row = data.rows;
     const result = {
-      data: '123',
+      data: row[0],
+      message: 'success',
     };
     res.locals.result = result;
     next();
@@ -38,20 +40,59 @@ router.post(testApi, async (req, res, next) => {
   }
 });
 
-const prismaTestApi: string = '/prismaTestApi';
-router.post(prismaTestApi, async (req, res, next) => {
+const signInWithPrisma: string = '/sign-in2';
+router.post(signInWithPrisma, async (req, res, next) => {
+  // const { mail, pw, temp }: { mail: string; pw: string; temp: number } =
+  // req.body;
+
+  try {
+    // inputCheck(mail).isNotEmpty().isLength({ min: 4, max: 100 }).isMail();
+    //inputCheck(temp).isInt();
+    // inputCheck(temp).isContact();
+    // inputCheck(temp).isDate();
+    // inputCheck(temp).isIP();
+    // inputCheck(temp).isEqual('123456');
+    // inputCheck(temp).isFloat();
+
+    const data = await prisma.account.findMany({
+      where: {
+        id: {
+          lt: 500011,
+        },
+      },
+    });
+    console.log(data[0].id);
+    const result = {
+      data: data,
+      message: 'success',
+    };
+    res.locals.result = result;
+    next();
+  } catch (err) {
+    next(err);
+  }
+});
+
+const signUpApi: string = '/sign-up';
+router.post(signUpApi, async (req, res, next) => {
   const { mail, pw, nickname }: { mail: string; pw: string; nickname: string } =
     req.body;
   try {
+    inputCheck(mail).isNotEmpty().isMail().isLength({ min: 4, max: 100 });
+    inputCheck(pw).isNotEmpty().isLength({ min: 4, max: 32 });
+    inputCheck(nickname).isInt().isLength({ min: 3, max: 32 });
+
     await prisma.account.create({
       data: {
-        mail: 'tennfin2@gmail.com',
-        pw: '1234',
-        nickname: 'hyoseok',
-        longitude: null,
-        latitude: null,
+        mail: mail,
+        pw: pw,
+        nickname: nickname,
       },
     });
+    res.locals.result = {
+      messsage: 'success',
+    };
+    next();
   } catch (err) {
     next(err);
   }
