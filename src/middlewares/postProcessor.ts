@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
-import { httpLogger, logger } from '@module/logger';
-import { HttpStatus } from '@module/httpStatus';
+import { httpLogger, logger } from 'modules/logger';
+import { HttpStatus } from 'modules/httpStatus';
 
 export default (req: Request, res: Response, next: NextFunction) => {
   // http req logging

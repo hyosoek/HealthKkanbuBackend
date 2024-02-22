@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import pool from '@config/database/postgreSQL';
-import inputCheck from '@module/inputCheck';
+import pool from 'configs/database/postgreSQL';
+import inputCheck from 'modules/inputCheck';
 import { PrismaClient } from '@prisma/client';
 import { max } from 'moment';
 const router = Router();

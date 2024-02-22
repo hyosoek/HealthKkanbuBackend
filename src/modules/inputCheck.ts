@@ -1,6 +1,6 @@
 import validator from 'validator';
-import regexPatterns from '@module/regex';
-import { BadRequestException } from '@module/customError';
+import regexPatterns from 'modules/regex';
+import { BadRequestException } from 'modules/customError';
 
 class InputCheck {
   // Don't use any type. We use unknown.

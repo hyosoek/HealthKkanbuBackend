@@ -5,7 +5,7 @@ import cookieParser from 'cookie-parser';
 import errorHandler from '@middleware/errorHandling';
 import cors from 'cors';
 import * as redis from 'redis';
-import { sslOptions } from '@config/sslOptions';
+import { sslOptions } from 'configs/sslOptions';
 import { config } from 'dotenv';
 config({ path: '.env' });
 import postProcessor from '@middleware/postProcessor';

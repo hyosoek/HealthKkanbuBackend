@@ -1,4 +1,4 @@
-import { HttpStatus } from '@module/httpStatus';
+import { HttpStatus } from 'modules/httpStatus';
 
 export class CustomError extends Error {
   status: number = HttpStatus.INTERNAL_SERVER_ERROR;

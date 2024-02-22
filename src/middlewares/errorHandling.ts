@@ -1,5 +1,15 @@
-import { CustomError, InternerServerException } from '@module/customError';
+import { CustomError, InternerServerException } from 'modules/customError';
 import { Request, Response, NextFunction } from 'express';
+
+declare global {
+  namespace Express {
+    interface Response {
+      locals: {
+        status: number;
+      };
+    }
+  }
+}
 
 export default (
   err: CustomError | Error,
