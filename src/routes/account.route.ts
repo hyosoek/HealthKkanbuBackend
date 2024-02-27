@@ -1,8 +1,6 @@
 import { Router } from 'express';
 import AccountController from '@controllers/account.controller';
-import { PrismaClient } from '@prisma/client';
-import AccountService from '@services/account.service';
-import { PostService } from '@services/post.service';
+import { Injectable } from '@nestjs/common';
 
 // @Injectable()
 class AccountRoute {
@@ -14,6 +12,7 @@ class AccountRoute {
   }
 
   private initializeRoutes() {
+    console.log('??');
     this.router.post(`${this.path}/log-in`, this.accountController.logIn);
     // this.router.post(`${this.path}/sign-up`, this.accountController.signUp);
   }

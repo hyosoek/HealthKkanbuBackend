@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@nestjs/common": "^10.3.3",
     "@prisma/client": "5.9.1",
     "@sub0709/json-config": "^1.1.1",
     "aws-sdk": "^2.1435.0",
@@ -23,6 +24,7 @@
     "nodemailer": "^6.9.7",
     "pg": "^8.11.1",
     "redis": "^4.6.13",
+    "reflect-metadata": "^0.2.1",
     "socket.io": "^4.7.2",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",

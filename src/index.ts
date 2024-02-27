@@ -2,13 +2,13 @@
 import express, { Express, Request, Response, NextFunction } from 'express';
 import https from 'https';
 import cookieParser from 'cookie-parser';
-import errorHandler from '@middleware/errorHandling';
+import errorHandler from 'middlewares/errorHandling';
 import cors from 'cors';
 import * as redis from 'redis';
 import { sslOptions } from 'configs/sslOptions';
 import { config } from 'dotenv';
 config({ path: '.env' });
-import postProcessor from '@middleware/postProcessor';
+import postProcessor from 'middlewares/postProcessor';
 
 const app: Express = express();
 const port: number = Number(process.env.PORT_NUM);
@@ -17,7 +17,6 @@ const server: https.Server = https.createServer(sslOptions, app);
 
 const redisClient: redis.RedisClientType = redis.createClient();
 redisClient.connect();
-
 app.get('*', (req: Request, res: Response, next: NextFunction) => {
   const protocol: string = req.protocol;
   if (protocol == 'https') {
@@ -41,7 +40,9 @@ app.use(express.static('../'));
 app.use(cookieParser());
 
 //API
-app.use('/account', require('./router/account/account'));
+app.use('/account', require('./routes/account.route'));
+
+//MiddleWare
 app.use(errorHandler);
 app.use(postProcessor);
 
