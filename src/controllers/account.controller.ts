@@ -4,16 +4,19 @@ import { PostService } from '@services/post.service';
 
 // @Injectable()
 class AccountController {
-  constructor(
-    private readonly accountService: AccountService,
-    private readonly postService: PostService
-  ) {}
+  public accountService = new AccountService();
+  constructor() {
+    console.log('컨트롤러 생성');
+  } // private readonly postService: PostService // private readonly accountService: AccountService,
+
+  // public logIn() {
+  //   console.log('??');
+  // }
 
   public logIn = async (req: Request, res: Response, next: NextFunction) => {
-    // id password
+    console.log('??');
     const id = req.body.id;
     const pw = req.body.pw;
-
     try {
       this.accountService.login(id, pw);
       next();

@@ -10,9 +10,13 @@ import { config } from 'dotenv';
 config({ path: '.env' });
 import postProcessor from 'middlewares/postProcessor';
 
-const app: Express = express();
-const port: number = Number(process.env.PORT_NUM);
-const httpsPort: number = Number(process.env.HTTPS_PORT_NUM);
+import accountRoute from '@routes/account.route';
+
+// import AccountRoute from '@routes/account.route';
+
+const app = express();
+const port = Number(process.env.PORT_NUM);
+const httpsPort = Number(process.env.HTTPS_PORT_NUM);
 const server: https.Server = https.createServer(sslOptions, app);
 
 const redisClient: redis.RedisClientType = redis.createClient();
@@ -40,7 +44,7 @@ app.use(express.static('../'));
 app.use(cookieParser());
 
 //API
-app.use('/account', require('./routes/account.route'));
+app.use(accountRoute.path, accountRoute.router);
 
 //MiddleWare
 app.use(errorHandler);

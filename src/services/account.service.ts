@@ -4,7 +4,10 @@ import { AccountEntity } from 'entity/AccountEntity';
 import { PrismaClient } from '@prisma/client';
 
 class AccountService {
-  constructor(private readonly prisma: PrismaClient) {}
+  // private readonly prisma: PrismaClient
+  constructor() {
+    console.log('서비스 생성');
+  }
 
   public getAccount: (idx: number) => Promise<AccountEntity>; //use prisma
 
