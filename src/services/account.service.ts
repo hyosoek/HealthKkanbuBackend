@@ -1,17 +1,44 @@
 import inputCheck from 'modules/inputCheck';
 import prisma from '../../prisma/context';
 import { AccountEntity } from 'entity/AccountEntity';
-import { PrismaClient } from '@prisma/client';
 
 class AccountService {
   // private readonly prisma: PrismaClient
-  constructor() {
-    console.log('서비스 생성');
+  constructor() {}
+  public async logIn(requestBody: {
+    mail: string;
+    pw: string;
+    temp: number;
+  }): Promise<{
+    token: string;
+  }> {
+    console.log(requestBody.mail);
+    console.log(requestBody.pw);
+
+    const data = await prisma.account.findMany({
+      where: {
+        mail: {
+          lt: requestBody.mail,
+        },
+        pw: {
+          lt: requestBody.pw,
+        },
+      },
+      select: {
+        id: true,
+      },
+    });
+    const result = {
+      token: data.toString(),
+    };
+    console.log(data);
+    //needTokenize
+    return result;
   }
 
   public getAccount: (idx: number) => Promise<AccountEntity>; //use prisma
 
-  public login: (id: string, pw: string) => Promise<string>;
+  // public logIn: (requestBody) => Promise<string>;
 }
 
 export default AccountService;

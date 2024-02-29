@@ -1,27 +1,29 @@
 import { NextFunction, Request, Response } from 'express';
 import AccountService from '@services/account.service';
 import { PostService } from '@services/post.service';
+import inputCheck from '@modules/inputCheck';
 
 // @Injectable()
 class AccountController {
   public accountService = new AccountService();
-  constructor() {
-    console.log('컨트롤러 생성');
-  } // private readonly postService: PostService // private readonly accountService: AccountService,
+  // constructor() {
+  // } // private readonly postService: PostService // private readonly accountService: AccountService,
 
   // public logIn() {
   //   console.log('??');
   // }
 
   public logIn = async (req: Request, res: Response, next: NextFunction) => {
-    console.log('??');
-    const id = req.body.id;
-    const pw = req.body.pw;
+    const { mail, pw, temp }: { mail: string; pw: string; temp: number } =
+      req.body;
     try {
-      this.accountService.login(id, pw);
+      inputCheck(mail).isNotEmpty().isLength({ min: 4, max: 100 }).isMail();
+      inputCheck(pw).isNotEmpty().isLength({ min: 4, max: 100 });
+      inputCheck(temp).isNotEmpty().isFloat();
+      res.locals.result = this.accountService.logIn(req.body);
       next();
-    } catch (error) {
-      next(error);
+    } catch (err) {
+      next(err);
     }
   };
 

@@ -21,6 +21,7 @@ model Account {
 
   @@index([location], map: "location_idx", type: Gist)
   @@index([mail], map: "mail_idx")
+  @@map("account")
 }
 
 /// This table contains check constraints anprisma migrate dev --name initd requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
@@ -39,4 +40,5 @@ model Refrigerator {
   co2        Float?  @db.Real
   model_name String? @db.VarChar(50)
   account    Account @relation(fields: [account_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  @@map("refrigerator")
 }
