@@ -12,32 +12,23 @@ class AccountService {
   }): Promise<{
     token: string;
   }> {
-    console.log(requestBody.mail);
-    console.log(requestBody.pw);
-
-    const data = await prisma.account.findMany({
-      where: {
-        mail: {
-          lt: requestBody.mail,
-        },
-        pw: {
-          lt: requestBody.pw,
-        },
-      },
+    const data = await prisma.account.findUnique({
       select: {
         id: true,
       },
+      where: {
+        mail: requestBody.mail,
+        pw: requestBody.pw,
+      },
     });
     const result = {
-      token: data.toString(),
+      token: data.id.toString(),
     };
-    console.log(data);
     //needTokenize
     return result;
   }
 
   public getAccount: (idx: number) => Promise<AccountEntity>; //use prisma
-
   // public logIn: (requestBody) => Promise<string>;
 }
 

@@ -20,7 +20,7 @@ class AccountController {
       inputCheck(mail).isNotEmpty().isLength({ min: 4, max: 100 }).isMail();
       inputCheck(pw).isNotEmpty().isLength({ min: 4, max: 100 });
       inputCheck(temp).isNotEmpty().isFloat();
-      res.locals.result = this.accountService.logIn(req.body);
+      res.locals.result = await this.accountService.logIn(req.body);
       next();
     } catch (err) {
       next(err);
