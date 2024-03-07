@@ -27,6 +27,24 @@ class AccountController {
     }
   };
 
+  public longLogIn = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    const { mail, pw, temp }: { mail: string; pw: string; temp: number } =
+      req.body;
+    try {
+      inputCheck(mail).isNotEmpty().isLength({ min: 4, max: 100 }).isMail();
+      inputCheck(pw).isNotEmpty().isLength({ min: 4, max: 100 });
+      inputCheck(temp).isNotEmpty().isFloat();
+      res.locals.result = await this.accountService.longLogIn(req.body);
+      next();
+    } catch (err) {
+      next(err);
+    }
+  };
+
   public getAccountByIdx() {}
 
   public getPostByUserIdx() {}

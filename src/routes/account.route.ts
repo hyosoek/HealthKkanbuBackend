@@ -15,6 +15,7 @@ class AccountRoute {
 
   private initializeRoutes() {
     this.router.post(`/log-in`, this.accountController.logIn);
+    this.router.post(`/log-in2`, this.accountController.longLogIn);
     // this.router.post(`${this.path}/sign-up`, this.accountController.signUp);
   }
 }
